@@ -1,0 +1,15 @@
+{% include "header.twig" %}
+<h1>Register:</h1>
+<form method="post" action="{{ config.access_point }}forms/register">
+    <div class="form-group">
+        <label>Username: <input type="text" name="username"></label>
+    </div>
+    <div class="form-group">
+        <label>Password: <input type="password" name="password"></label>
+    </div>
+    {% include "captcha.twig" %}
+    <div class="form-group">
+        <button name="register_btn" type="submit">Register</button>
+    </div>
+</form>
+{% include "footer.twig" %}

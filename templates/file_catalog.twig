@@ -1,0 +1,13 @@
+{% if files %}
+    {% set decoded_json = files|json_decode %}
+        {% set file_ext = decoded_json.0.file_name|split('.')[1] %}
+        {% set file_name = decoded_json.0.file_name %}
+        {% set thumbnail = decoded_json.0.thumbnail %}
+        {% if file_ext == "jpg" or file_ext == "jpeg" or file_ext == "png" or file_ext == "gif" %}
+            <a href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}{{ config.file_dir }}{{ board }}/{{ file_name }}">
+                <img class="recent_post_img" src="{{ config.access_point }}{{ config.file_dir }}{{ board }}/{% if thumbnail %}{{ thumbnail }}{% else %}{{ file_name }}{% endif %}">
+            </a>
+        {% else %}
+            <img class="recent_post_img" src="{{ config.access_point }}img/file.jpg"></a>
+        {% endif %}
+{% endif %}

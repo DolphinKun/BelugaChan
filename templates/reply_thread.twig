@@ -1,0 +1,29 @@
+<div class="reply_to_thread_box">
+    <form method="post" action="{{ config.access_point }}forms/reply_thread" enctype="multipart/form-data">
+        <input type="hidden" name="board" value="{{ board }}">
+        <input type="hidden" name="thread_id" value="{{ thread.id }}">
+        <h2>Reply to thread:</h2>
+        <div class="form-group">
+            <label>Name: <input type="text" value="{{ config.default_poster_name }}" name="name"></label>
+        </div>
+        <div class="form-group">
+            <label>Subject name: <input type="text" name="subject_name"></label>
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="files">Files:</label>
+            <input type="file" id="files" name="files[]" multiple><br><br>
+        </div>
+        <div class="form-group">
+            <label>Password: <input type="text" value="{{ random_password }}" name="password"></label>
+        </div>
+        {% include "captcha.twig" %}
+        <span>Max upload size is {{ config.max_upload_size }} MB.</span>
+        <div class="form-group">
+            <button name="submit_post" type="submit">Post</button>
+        </div>
+    </form>
+</div>

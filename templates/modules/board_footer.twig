@@ -1,0 +1,11 @@
+{% if board and thread and config.auto_updating and config.auto_updating_method == "websockets" %}
+    <div id="websocket_indicator">
+        <p>WebSocket Status: <div id="websocket_status">Not connected.</div></p>
+    </div>
+{% endif %}
+<div class="board_footer">
+    {% if config.enable_logging %}
+        <a href="{{ config.access_point }}log?board={{ board }}">Board logs</a>
+    {% endif %}
+    <a href="{{ config.access_point }}{{ board }}/catalog">Catalog</a>
+</div>

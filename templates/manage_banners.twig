@@ -1,0 +1,10 @@
+{% include "header.twig" %}
+{% include "modules/add_banner_form.twig" %}
+<div class="board_container">
+{% for banner in banners %}
+<div class="banner_option">
+    <a href="{{ config.access_point }}forms/delete_banner?banner={{ banner.id }}&board={{ board }}"><img src="{{ config.access_point }}files/{{ board }}/banners/{{ banner.image }}"></a>
+</div>
+{% endfor %}
+</div>
+{% include "footer.twig" %}

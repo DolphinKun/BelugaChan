@@ -1,0 +1,73 @@
+{% include "header.twig" %}
+{% if not show_reply_box %}
+    {% include "create_thread.twig" %}
+{% endif %}
+        {% include "reply_thread.twig" %}
+    <div class="thread" id="{{ thread.id }}">
+        {% set ip = thread.ip|slice(15, 22) %}
+        {% if vol %}IP: {{ ip }}<br>{% endif %}
+        <span class="post_name">{% set trip_name = thread.name %}{% include "modules/trip.twig" %} {% if thread.pinned %}
+                <i class="fa fa-thumbtack"></i>{% endif %} {% if thread.locked %}
+                <i class="fa fa-lock"></i>{% endif %} {{ thread.subject }} </span><span
+                class="flag-header">{% if board_config.country_flags_enabled and thread.country_iso %}
+                <span class="flag-icon flag-icon-{{ thread.country_iso }}"></span>{% endif %}</span><span
+                class="post_date"> {{ thread.post_date|date("Y-m-d") }}</span>{% if board_config.enable_ids %}<span class="user_id">
+        ID: {{ thread.ip|slice(30, 11) }}</span>{% endif %}<span class="post_id"> {{ thread.id }}
+            {% if vol %}
+                <a href="{{ config.access_point }}forms/delete_post?id={{ thread.id }}&board={{ board }}">[Delete]</a>
+                {% if not thread.pinned %}
+                <a href="{{ config.access_point }}forms/thread_actions?id={{ thread.id }}&board={{ board }}&action=pin">[Pin]</a>
+                {% else %}
+                <a href="{{ config.access_point }}forms/thread_actions?id={{ thread.id }}&board={{ board }}&action=unpin">[Unpin]</a>
+            {% endif %}
+            {% if not thread.locked %}
+                <a href="{{ config.access_point }}forms/thread_actions?id={{ thread.id }}&board={{ board }}&action=lock">[Lock]</a>
+                {% else %}
+                <a href="{{ config.access_point }}forms/thread_actions?id={{ thread.id }}&board={{ board }}&action=unlock">[Unlock]</a>
+            {% endif %}
+                <a href="{{ config.access_point }}ban_user?post_id={{ thread.id }}&board={{ board }}">[Ban IP]</a>
+                {% else %}
+                <a href="{{ config.access_point }}delete_post?id={{ thread.id }}&board={{ board }}">[Delete]</a>
+            {% endif %}</span>
+        <br>
+        <div class="files">
+            {% if thread.files %}
+                {% set files = thread.files %}
+                {% include "file.twig" %}
+            {% endif %}
+        </div>
+        {# Yes, I know this looks insecure, but it's done through htmlspecialchars, so it's safe :) #}
+        <p>{{ thread.message|raw }}</p>
+    </div>
+    {% if replies %}
+        <div id="replies">
+            {% for reply in replies %}
+                <div class="reply" id="{{ reply.id }}">
+                    {% set ip = reply.ip|slice(15, 22) %}
+                    {% if vol %}IP: {{ ip }}<br>{% endif %}
+                    <span class="post_name">{% set trip_name = reply.name %}{% include "modules/trip.twig" %} {{ reply.subject }}<span
+                                class="flag-header">{% if board_config.country_flags_enabled and reply.country_iso %}
+                <span class="flag-icon flag-icon-{{ reply.country_iso }}"></span>{% endif %}</span></span><span
+                            class="post_date"> {{ reply.post_date|date("Y-m-d") }}</span>{% if board_config.enable_ids %}<span
+                            class="user_id">ID: {{ reply.ip|slice(30, 11) }}</span>{% endif %}<span
+                            class="post_id"> {{ reply.id }}
+                        {% if vol %}
+                            <a href="{{ config.access_point }}forms/delete_post?id={{ reply.id }}&board={{ board }}">[Delete]</a>
+                            <a href="{{ config.access_point }}ban_user?post_id={{ thread.id }}&board={{ board }}">[Ban IP]</a>
+                    {% else %}
+                            <a href="{{ config.access_point }}delete_post?id={{ reply.id }}&board={{ board }}">[Delete]</a>
+
+                        {% endif %}</span>
+                    <br>
+                    {% if reply.files %}
+                        {% set files = reply.files %}
+                        {% include "file.twig" %}
+                    {% endif %}
+                    {# Yes, I know this looks insecure, but it's done through htmlspecialchars, so it's safe :) #}
+                    <p>{{ reply.message|raw }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% include "modules/board_footer.twig" %}
+{% include "footer.twig" %}

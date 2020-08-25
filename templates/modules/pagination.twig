@@ -1,0 +1,6 @@
+<br>
+<div id="pagination">
+    {% for page in paginated_pages %}
+        <a class="pagination_link" href="?page={{ page }}&per_page={{ per_page }}">{{ page }}</a>
+    {% endfor %}
+</div>

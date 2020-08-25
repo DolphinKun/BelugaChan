@@ -1,0 +1,25 @@
+{% include "header.twig" %}
+<h1>System status:</h1>
+<p>This page alerts you of any issues with your {{ config.software_name }} installation.</p>
+{% if not system_status %}
+    <p>No issues found!</p>
+{% endif %}
+{% if system_status %}
+    <ul>
+        {% if system_status.memory_limit %}
+            <li>Your PHP configuration's memory limit is too low. You should set it to 512MB to avoid any performance
+                issues. Current setting: {{ system_status.memory_limit }}MB
+            </li>
+        {% endif %}
+        {% if system_status.sql_password %}
+            <li>Your SQL user password is too short. You should change this for security reasons.</li>
+        {% endif %}
+        {% if system_status.sqlite %}
+            <li>Using sqlite3 in a production environment is not recommended due to <span style="font-weight: bold;">huge</span> performance issues.</li>
+        {% endif %}
+        {% if system_status.geoip_file %}
+        <li>GeoIP is enabled, yet the country file is missing. Please correct this error or you will encounter errors when trying to post on a country-flag-enabled board!</li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% include "footer.twig" %}

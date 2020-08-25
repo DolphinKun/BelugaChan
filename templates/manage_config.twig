@@ -1,0 +1,29 @@
+{% include "header.twig" %}
+<h1>Manage {{ config.site_name }} config:</h1>
+<p>To prevent file corruption, a backup of config.php is saved as config.backup.php (.php to stop viewing by non-administrators). You might not be able to edit everything using the web configuration editor.</p>
+<form method="post" action="{{ config.access_point }}forms/update_config">
+    <div class="form-group">
+    <label for="site_name">Site name:</label>
+        <input type="text" name="site_name" id="site_name" value="{{ config.site_name }}">
+    </div>
+    <div class="form-group">
+        <label for="access_point">Access Point:</label>
+        <input type="text" name="access_point" id="access_point" value="{{ config.access_point }}">
+    </div>
+    <div class="form-group">
+        <label for="board_creation_open">Board creation open:</label>
+        <input type="checkbox" name="board_creation_open" id="board_creation_open" value="1" {% if config.board_creation_open %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+        <label for="custom_css_allowed">Allow custom CSS:</label>
+        <input type="checkbox" name="custom_css_allowed" id="custom_css_allowed" value="1" {% if config.custom_css_allowed %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+        <label for="captcha_enabled">Enable captcha:</label>
+        <input type="checkbox" name="captcha_enabled" id="captcha_enabled" value="1" {% if config.captcha_enabled %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+        <button name="update_config" type="submit">Update configuration!</button>
+    </div>
+</form>
+{% include "footer.twig" %}

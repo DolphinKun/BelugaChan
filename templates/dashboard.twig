@@ -1,0 +1,79 @@
+{% include "header.twig" %}
+<h1>Dashboard:</h1>
+<h3>Boards you own:</h3>
+<table style="width:100%">
+    <tr>
+        <th>Name</th>
+        <th>Mod</th>
+        <th>Bans</th>
+        <th>Settings</th>
+    </tr>
+    {% if not boards_owned %}
+        <h3>You do not own any boards.</h3>
+    {% endif %}
+    {% for board in boards_owned %}
+        <tr>
+            <td>/{{ board.name }}/</td>
+            <td><a href="{{ config.access_point }}{{ board.name }}/">Mod</a></td>
+            <td><a href="{{ config.access_point }}manage_bans?board={{ board.name }}">Bans</a></td>
+            <td><a href="{{ config.access_point }}manage_board?board={{ board.name }}">Settings</a></td>
+        </tr>
+    {% endfor %}
+</table>
+Board total: {{ board_count }}
+<h3>Volunteered boards:</h3>
+<table style="width:100%">
+    <tr>
+        <th>Name</th>
+        <th>Bans</th>
+        <th>Mod</th>
+    </tr>
+    {% for board in boards_vol %}
+        <tr>
+            <td>/{{ board.name }}/</td>
+            <td><a href="{{ config.access_point }}manage_bans?board={{ board.name }}">Bans</a></td>
+            <td><a href="{{ config.access_point }}{{ board.name }}/">Mod</a></td>
+        </tr>
+    {% endfor %}
+</table>
+Volunteered Boards total: {{ boards_vol|length }}
+{% if config.board_creation_open and config.max_boards_per_account > board_count %}
+    <h2>Create board:</h2>
+    <form action="{{ config.access_point }}forms/create_board" method="post">
+        <div class="form-group">
+            <label>Board name (without the slashes): <input type="text" name="board"></label>
+        </div>
+        <div class="form-group">
+            <label>Board subtitle: <input type="text" name="subtitle"></label>
+        </div>
+        {% include "captcha.twig" %}
+        <div class="form-group">
+            <button name="create_board_button" type="submit">Create board</button>
+        </div>
+    </form>
+{% endif %}
+<h2>Change password:</h2>
+<form action="{{ config.access_point }}forms/change_password" method="post">
+    <div class="form-group">
+        <label>Old password: <input type="password" name="old_password"></label>
+    </div>
+    <div class="form-group">
+        <label>New password: <input type="password" name="new_password"></label>
+    </div>
+    <div class="form-group">
+        <button name="change_password_button" type="submit">Change password</button>
+    </div>
+</form>
+
+{% if user_info.role == "admin" %}
+    <a href="{{ config.access_point }}manage_config">Manage config</a><br>
+    <a href="{{ config.access_point }}manage_boards">Manage boards</a><br>
+    <a href="{{ config.access_point }}manage_users">Manage users</a><br>
+    <a href="{{ config.access_point }}manage_global_filters">Manage global filters</a><br>
+    <a href="{{ config.access_point }}system_status">System status</a><br>
+{% endif %}
+{% if gvol %}
+    <a href="{{ config.access_point }}manage_bans?global_bans=true" class="error">Manage global bans</a><br>
+{% endif %}
+<a href="{{ config.access_point }}logout">Logout</a>
+{% include "footer.twig" %}

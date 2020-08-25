@@ -1,0 +1,70 @@
+{% include "header.twig" %}
+<h1>Error:</h1>
+{% if error == "INVALID_INPUT" %}
+Whitespace text in messages/certain fields is not allowed.
+{% endif %}
+{% if error == "BAD_FILE" %}
+    Your file was not uploaded. Some possible reasons are:
+    <ul>
+        <li>The file is too big.</li>
+        <li>File type is not allowed.</li>
+        <li>File is blacklisted.</li>
+    </ul>
+{% endif %}
+{% if error == "BAD_CAPTCHA" %}
+Captcha is incorrect.
+{% endif %}
+{% if error == "BAD_LOGIN" %}
+Login is invalid!
+<meta http-equiv="refresh" content="3; url={{ config.access_point }}login" />
+{% endif %}
+{% if error == "BOARD_LOCKED" %}
+Board is locked!
+{% endif %}
+{% if error == "BOARD_LIMIT" %}
+You have exceeded the maximum board limit per account.
+{% endif %}
+{% if error == "BANNED" and not ban_info.appeal_reason %}
+You have been banned {% if is_global %}globally{% else %}from /{{ board }}/{% endif %} for the reason: {{ reason }}
+    <h4>Appeal:</h4>
+    <form method="post" action="{{ config.access_point }}forms/appeal_ban">
+        <input type="hidden" name="ip" value="{{ ip }}">
+        <div class="form-group">
+        <label for="appeal_reason">Appeal reason:</label>
+        <input type="text" name="appeal_reason" id="appeal_reason">
+        </div>
+        <div class="form-group">
+            <button type="submit" name="submit_appeal">Submit appeal</button>
+        </div>
+    </form>
+    {% elseif error == "BANNED" %}
+    Ban appealed.
+{% endif %}
+{% if error == "VOL_DOES_NOT_EXIST" %}
+The vol you are trying to add does not exist. Please get the mod to create their account first.
+{% endif %}
+{% if error == "BOARD_EXISTS" %}
+Board already exists.
+{% endif %}
+{% if error == "NO_BANNER" %}
+You must choose a image to upload for the banner.
+{% endif %}
+{% if error == "BAD_LOG" %}
+Bad log file.
+{% endif %}
+{% if error == "BAD_PASSWORD" %}
+Incorrect password.
+{% endif %}
+{% if error == "ALREADY_BANNED" %}
+User has already been banned!
+{% endif %}
+{% if error == "THREAD_DOES_NOT_EXIST" %}
+The thread you are looking for has been deleted/purged.
+{% endif %}
+{% if error == "THREAD_LOCKED" %}
+Thread is locked.
+{% endif %}
+{% if error == "BAN_ALREADY_APPEALED" %}
+Ban already appealed.
+{% endif %}
+{% include "footer.twig" %}

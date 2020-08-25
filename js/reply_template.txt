@@ -1,0 +1,8 @@
+<div class="reply" id="{{ post_id }}">
+    <span class="post_name">{{ post_name }}</span><span
+        class="post_date"> {{ post_date }}</span><span class="post_id">{{ post_id }}<a
+        href="/delete_post?id={{ post_id }}&amp;board={{ board }}">[Delete]</a></span>
+    <br>
+    <p>{{ message }}<br>
+    </p>
+</div>

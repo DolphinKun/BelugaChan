@@ -1,0 +1,13 @@
+<div class="add_banner_form">
+    <form method="post" action="{{ config.access_point }}forms/add_banner" enctype="multipart/form-data">
+        <input type="hidden" name="board" value="{{ board }}">
+        <h2>Add banner:</h2>
+        <div class="form-group">
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file"><br><br>
+        </div>
+        <div class="form-group">
+            <button name="submit_banner" type="submit">Post</button>
+        </div>
+    </form>
+</div>

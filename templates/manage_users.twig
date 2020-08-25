@@ -1,0 +1,26 @@
+{% include "header.twig" %}
+<h1>Manage users:</h1>
+<table style="width:100%">
+    <tr>
+        <th>Username</th>
+        <th>Manage role</th>
+        <th>Delete</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td><form method="post" action="{{ config.access_point }}forms/update_user_role">
+                    <input type="hidden" name="username" value="{{ user.username }}">
+                    <select name="role">
+                        {% for role in config.user_roles %}
+                        <option value="{{ role }}" {% if role == user.role %}selected{% endif %}>{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Update role</button>
+                </form></td>
+            <td><a style="color: red;" href="{{ config.access_point }}forms/delete_user?username={{ user.username }}">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+<a href="{{ config.access_point }}dashboard">Back</a>
+{% include "footer.twig" %}

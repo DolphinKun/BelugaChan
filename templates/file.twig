@@ -1,0 +1,23 @@
+{% if files %}
+{% set decoded_json = files|json_decode %}
+        {% for file in decoded_json %}
+{% set file_ext = file.file_name|split('.')[1] %}
+{% set file_name = file.file_name %}
+{% set thumbnail = file.thumbnail %}
+        <div class="col-sm-2">
+        <span>{{ file.original_file_name }} {{ file.file_size }}MB</span><br>
+        {% if file_ext == "jpg" or file_ext == "jpeg" or file_ext == "png" or file_ext == "gif" %}
+        <a href="{{ config.access_point }}{{ config.file_dir }}{{ board }}/{{ file_name }}">
+            <img class="post_img" src="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}{{ config.file_dir }}{{ board }}/{% if thumbnail %}{{ thumbnail }}{% else %}{{ file_name }}{% endif %}">
+        </a>
+    {% elseif file_ext == "mp4" or file_ext == "webm" %}
+        <video class="post_video" controls>
+            <source src="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}{{ config.file_dir }}{{ board }}/{{ file_name }}" type="video/{{ file_ext }}">
+        </video>
+    {% else %}
+        <a href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}{{ config.file_dir }}{{ board }}/{{ file_name }}"><img class="post_img" src="{{ config.access_point }}img/file.jpg"></a>
+        {% endif %}
+        </div>
+    {% endfor %}
+
+        {% endif %}

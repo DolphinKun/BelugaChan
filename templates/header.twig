@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% if board %}
+        <title>{{ config.site_name }} - /{{ board }}/</title>
+    {% else %}
+        <title>{{ config.site_name }}</title>
+    {% endif %}
+    <link rel="stylesheet"
+          href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}css/main.css">
+    {% if board_config.theme and board_config.theme != "none" %}
+        <link rel="stylesheet"
+              href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}css/themes/{{ board_config.theme }}.css">
+    {% endif %}
+    {% if config.custom_css_allowed and board %}
+        <link rel="stylesheet"
+              href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}css/boards/{{ board }}.css">
+    {% endif %}
+    {% if board_config.country_flags_enabled %}
+        <link rel="stylesheet"
+              href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}css/flags.css">
+    {% endif %}
+    <link rel="stylesheet"
+          href="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}css/fontawesome.css">
+
+</head>
+<body onscroll="RemoveNewPostCount()">
+<script src="{{ config.access_point }}js/autobahn.js"></script>
+<script>
+    {% if board and thread and config.auto_updating and config.auto_updating_method == "websockets" %}
+    var conn;
+    var new_post_count;
+    var old_title = document.title;
+    var video_files = ["mp4", "webm"];
+    var image_files = ["jpg", "jpeg", "gif", "png"];
+
+    function RemoveNewPostCount() {
+        document.title = old_title;
+    }
+
+    function PostAction(data) {
+        switch (data.action) {
+            case "delete":
+                var post = document.getElementById(data.id);
+                post.parentNode.removeChild(post);
+                break;
+        }
+    }
+
+    function WSConnect() {
+        conn = new ab.Session('{{ config.external_websocket_dsn }}',
+            function () {
+                document.getElementById("websocket_status").innerHTML = 'Connected <i class="fa fa-circle fa-1" style="color: green;" aria-hidden="true"></i>';
+                var thread_id = "{{ thread.id }}";
+                conn.subscribe("{{ board }}_message", function (topic, data) {
+                    alert("Board message: " + data.message);
+                });
+                conn.subscribe(thread_id, function (topic, data) {
+                    PostAction(data);
+                    if (data.action == "reply") {
+                        var start_post_html = '<div class="reply" id="' + data.id + '"><span class="post_name"> ' + data.name + '</span><span class="flag-header">{% if board_config.country_flags_enabled and thread.country_iso %} <span class="flag-icon flag-icon-' + data.country_iso + '"></span>{% endif %}</span><span class="post_date"> ' + data.post_date + '</span> {% if board_config.enable_ids %}<span class="user_id">ID: ' + data.poster_id + '</span>{% endif %}<span class="post_id"> ' + data.id + ' <a href="/delete_post?id=' + data.id + '&amp;board=' + data.board + '">[Delete]</a></span><br>';
+                        if (!new_post_count) {
+                            new_post_count = 1;
+                        } else {
+                            new_post_count = new_post_count + 1;
+                        }
+                        document.title = "NEW POST (" + new_post_count + ") " + old_title;
+                        var files = data.files;
+                        if (files) {
+                            files = JSON.parse(files);
+                            var files_html = '<div class="files">';
+                            for (var i = 0; i < files.length; i++) {
+                                var ext = files[i].file_name.split(".")[1];
+                                if (video_files.includes(ext)) {
+                                    files_html = files_html + '<span>' + files[i].original_file_name + ' ' + files[i].file_size + 'MB </span><br><video class="post_video" controls=""><source src="../{{ config.file_dir }}' + data.board + '/' + files[i].file_name + '" type="video/' + ext + '"></video><br>';
+                                } else if (image_files.includes(ext)) {
+                                    files_html = files_html + '<span>' + files[i].original_file_name + ' ' + files[i].file_size + 'MB </span><br><a href="../{{ config.file_dir }}' + data.board + '/' + files[i].file_name + '"><img class="post_img" src="../{{ config.file_dir }}' + data.board + '/' + files[i].thumbnail + '"></a><br>';
+                                } else {
+                                    files_html = files_html + '<span>' + files[i].original_file_name + ' ' + files[i].file_size + 'MB </span><br><a href="../{{ config.file_dir }}' + data.board + '/' + files[i].file_name + '"><img class="post_img" src="../img/file.jpg"></a><br>';
+                                }
+                            }
+                            files_html = files_html + '</div>';
+                            document.getElementById("replies").innerHTML = document.getElementById("replies").innerHTML +
+                                start_post_html + files_html +
+                                '<p>' + data.message + '</p></div>';
+                        } else {
+                            document.getElementById("replies").innerHTML = document.getElementById("replies").innerHTML +
+                                start_post_html +
+                                '<p>' + data.message + '</p></div>';
+                        }
+                    }
+                });
+            },
+            function () {
+                document.getElementById("websocket_status").innerHTML = 'Disconnected <i class="fa fa-circle fa-1" style="color: red;" aria-hidden="true"></i>';
+                document.getElementById("websocket_status").innerHTML = 'Disconnected; trying to reconnect... <i class="fa fa-circle fa-1" style="color: yellow;" aria-hidden="true"></i>';
+                setTimeout(WSConnect, 5000)
+            }
+        );
+    }
+
+    WSConnect();
+    {% endif %}
+</script>
+<nav>
+    <a class="nav_item" href="{{ config.access_point }}">Home</a>
+    <a class="nav_item" href="{{ config.access_point }}boards">Boards</a>
+    <a class="nav_item" href="{{ config.access_point }}login">My account</a>
+    {% if board %}
+        <a class="nav_item" href="{{ config.access_point }}{{ board }}/catalog">Catalog</a>
+    {% endif %}
+    <a class="nav_item" style="color: red;" href="{{ config.access_point }}help">Help</a>
+</nav>
+{% if random_banner %}
+    <img class="board_banner"
+         src="{% if config.enable_cdn %}{{ config.cdn_url }}{% else %}{{ config.access_point }}{% endif %}files/{{ board }}/banners/{{ random_banner.image }}">
+{% endif %}
+{% if board and board_config %}
+<div id="board_info">
+    <h2 class="board_title">/{{ board }}/: {{ board_info.subtitle }}</h2>
+</div>
+{% endif %}
+{% if config.online_mode %}
+<p class="error">Warning: online mode is still in beta. Expect a lot of issues!</p>
+{% endif %}

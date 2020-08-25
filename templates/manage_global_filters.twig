@@ -1,0 +1,38 @@
+{% include "header.twig" %}
+<h1>Manage global filters:</h1>
+<table style="width:100%">
+    <tr>
+        <th>Search value</th>
+        <th>Replacement</th>
+        <th>Ban on post</th>
+        <th>Delete</th>
+    </tr>
+    {% for filter in global_filters %}
+        <tr>
+            <td>{{ filter.filter }}</td>
+            <td>{{ filter.result }}</td>
+            <td>{% if filter.ban_on_post %}Yes{% else %}No{% endif %}</td>
+            <td><a href="{{ config.access_point }}forms/delete_filter?is_global=true&filter_name={{ filter.filter|url_encode }}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<h3>Add filter:</h3>
+<form method="post" action="{{ config.access_point }}forms/add_filter?is_global=true">
+    <div class="form-group">
+        <label for="filter_text">Filter text:</label>
+        <input type="text" id="filter_text" name="filter_text">
+    </div>
+    <div class="form-group">
+        <label for="replacement">Replacement:</label>
+        <input type="text" id="replacement" name="replacement">
+    </div>
+    <div class="form-group">
+        <label for="ban_on_post">Ban on post?</label>
+        <input type="checkbox" id="ban_on_post" name="ban_on_post" value="1">
+    </div>
+    <div class="form-group">
+        <button type="submit" name="submit">Add filter</button>
+    </div>
+</form>
+{% include "footer.twig" %}

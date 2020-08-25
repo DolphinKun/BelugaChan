@@ -1,0 +1,20 @@
+{% include "header.twig" %}
+<h1>Help:</h1>
+<p>What is this site? This site is an imageboard. An imageboard is a way to share ideas with others (called anons; stands for anonymous users).</p>
+<a href="#trip_help">How do I trip?</a><br>
+<a href="#text_formatting">Text formatting</a>
+<p id="trip_help">You should only trip when needed (e.g. an admin needs proof it's really you) otherwise it can be considered annoying by others.<br>
+    There are 3 types of trips:<br>
+    <span class="green_text">#</span> trips are considered insecure due to using MD5, but for compatibility reasons, they still exist. Usage: MyName#MyPassword<br>
+    <span class="green_text">##</span> trips are considered much more secure than # trips, but they're not 100% secure. Usage: MyName##MyPassword<br>
+    <span class="green_text">###</span> trips are considered ultra-secure. Usage: MyName###MyPassword<br>
+</p>
+<p id="text_formatting">
+    Text formatting (keep in mind these may not work on this site due to configuration changes by the owner):<br>
+    > <span class="help_pointer">==></span> <span class="green_text">></span><br>
+    < <span class="help_pointer">==></span> <span class="orange_text"><</span><br>
+    ==test== <span class="help_pointer">==></span> <span class="big_text">test</span><br>
+    **test** <span class="help_pointer">==></span> <span class="spoiler_text">test</span><br>
+    !spin test spin! <span class="help_pointer">==></span> <span class="spin_text">test</span>
+</p>
+{% include "footer.twig" %}

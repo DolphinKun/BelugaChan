@@ -1,0 +1,7 @@
+{% include "header.twig" %}
+<h1>Report post:</h1>
+<form method="post" action="{{ config.access_point }}forms/open_report">
+    <input type="hidden" name="id" value="{{ post_id }}">
+
+</form>
+{% include "footer.twig" %}

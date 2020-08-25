@@ -1,0 +1,20 @@
+{% include "header.twig" %}
+<h1>Manage boards:</h1>
+<table style="width:100%">
+    <tr>
+        <th>Name</th>
+        <th>Subtitle</th>
+        <th>Owner</th>
+        <th>Manage</th>
+    </tr>
+    {% for board in boards %}
+        <tr>
+            <td>/{{ board.name }}/</td>
+            <td>{{ board.subtitle }}</td>
+            <td>{{ board.owner }}</td>
+            <td><a href="{{ config.access_point }}manage_board?board={{ board.name }}">Manage</a></td>
+        </tr>
+    {% endfor %}
+</table>
+<a href="{{ config.access_point }}dashboard">Back</a>
+{% include "footer.twig" %}

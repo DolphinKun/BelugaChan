@@ -1,0 +1,24 @@
+{% include "header.twig" %}
+<h1>Catalog of /{{ board }}/:</h1>
+{% include "create_thread.twig" %}
+{% if not threads %}
+    <h3>There are no threads.</h3>
+{% endif %}
+        {% for thread in threads %}
+            <div class="board_container">
+                <div class="catalog_item">
+                        {% if thread.files %}
+                            {% set files = thread.files %}
+                            {% include "file_catalog.twig" %}
+                        {% endif %}
+                        <br>
+                    <a class="catalog_link" href="{{ config.access_point }}{{ board }}/{{ thread.id }}">
+                        {% if thread.pinned %}<i class="fa fa-thumbtack"></i>{% endif %}  {% if thread.locked %}
+                            <i class="fa fa-lock"></i>{% endif %}
+                        {{ thread.message|raw|htmlspecialdecode|striptags|slice(0, 10) }}...<br>
+                        R: {% if not thread.reply_count %}0{% else %}{{ thread.reply_count }}{% endif %}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+{% include "footer.twig" %}

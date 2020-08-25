@@ -1,0 +1,11 @@
+{% if trip_name == "## Administrator" %}
+    <span class="admin_trip">## Administrator</span>
+{% elseif trip_name == "## Board Owner" %}
+    <span class="boardowner_trip">## Board Owner</span>
+{% elseif trip_name == "## Global Volunteer" %}
+    <span class="gvol_trip">## Global Volunteer</span>
+{% elseif trip_name == "## Board Volunteer" %}
+    <span class="boardvol_trip">## Board Volunteer</span>
+{% else %}
+    {{ trip_name }}
+{% endif %}

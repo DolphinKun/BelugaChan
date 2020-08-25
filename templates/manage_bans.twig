@@ -1,0 +1,31 @@
+{% include "header.twig" %}
+{% if is_global %}
+    <h1>Global bans:</h1>
+{% else %}
+    <h1>Bans for /{{ board }}/:</h1>
+{% endif %}
+<table style="width:100%">
+    <tr>
+        <th>IP</th>
+        <th>Reason</th>
+        <th>Appeal reason</th>
+        <th>Date banned</th>
+        <th>Lift</th>
+    </tr>
+    {% if not board_bans %}
+        <h3>No bans :)</h3>
+    {% endif %}
+    {% for ban in board_bans %}
+        {% set ip = ban.ip|slice(15, 22) %}
+        <tr>
+            <td>{{ ip }}</td>
+            <td>{{ ban.reason }}</td>
+            <td>{{ ban.appeal_reason }}</td>
+            <td>{{ ban.date_banned|date("Y-m-d") }}</td>
+            <td>
+                <a href="{{ config.access_point }}forms/lift_ban?{% if board %}board={{ board }}{% else %}is_global={{ is_global }}{% endif %}&ip={{ ban.ip }}">Lift!</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% include "footer.twig" %}

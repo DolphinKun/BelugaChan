@@ -1,0 +1,17 @@
+{% include "header.twig" %}
+<h1>{{ config.site_name }} boards:</h1>
+<table style="width:100%">
+    <tr>
+        <th>Name</th>
+        {% if config.enable_pph %}<th>PPH</th>{% endif %}
+        <th>Total post count</th>
+    </tr>
+{% for board in boards %}
+    <tr>
+        <td><a href="{{ config.access_point }}{{ board.name }}">/{{ board.name }}/</a></td>
+        {% if config.enable_pph %}<td>{{ board.pph }}</td>{% endif %}
+        <td>{{ board.post_count }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% include "footer.twig" %}

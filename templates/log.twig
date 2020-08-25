@@ -1,0 +1,8 @@
+{% include "header.twig" %}
+<h1>Logs:</h1>
+<p>How does BelugaChan handle logging? BelugaChan stores it in text files, then renders it to you, the viewer.</p>
+{% for log in logs %}
+    {% set log_file = log|split("/")[1] %}
+    <a href="{{ config.access_point }}log_viewer?log={{ log_file }}">{{ log|split("/")[1] }}</a><br>
+{% endfor %}
+{% include "footer.twig" %}

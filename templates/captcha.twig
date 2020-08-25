@@ -1,0 +1,7 @@
+{% if config.captcha_enabled or captcha_wall %}
+<div class="form-group">
+<img id="captcha" src="{{ config.access_point }}securimage/securimage_show.php" alt="CAPTCHA Image"/>
+<br>
+<input type="text" name="captcha_code" size="10" maxlength="6"/>
+</div>
+{% endif %}

@@ -1,0 +1,15 @@
+{% include "header.twig" %}
+<h1>Login:</h1>
+<form method="post" action="{{ config.access_point }}forms/login">
+    <div class="form-group">
+        <label>Username: <input type="text" name="username"></label>
+    </div>
+    <div class="form-group">
+        <label>Password: <input type="password" name="password"></label>
+    </div>
+    <div class="form-group">
+        <button name="login_btn" type="submit">Login</button>
+    </div>
+    <p>You can sign up <a href="{{ config.access_point }}register">here</a>.</p>
+</form>
+{% include "footer.twig" %}

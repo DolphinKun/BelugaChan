@@ -1,0 +1,84 @@
+{% include "header.twig" %}
+<h1>Manage /{{ board }}/:</h1>
+<form method="post" id="update_board" action="{{ config.access_point }}forms/update_board"></form>
+<input type="hidden" name="board" form="update_board" value="{{ board }}">
+<div class="form-group">
+    <label>Board locked? <input form="update_board" type="checkbox" name="locked" value="1"
+                                {% if board_config.locked %}checked="checked"{% endif %}></label>
+</div>
+<div class="form-group">
+    <label>Owner: <input onclick="alert('Be careful...');" type="text" form="update_board" name="owner"
+                         value="{{ board_info.owner }}"></label>
+</div>
+<div class="form-group">
+    <label for="theme_option">Theme:</label><br>
+    <select name="theme" form="update_board" id="theme_option">
+        {% for theme in config.themes %}
+            <option>{{ theme }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="form-group">
+    <h3>Vols:</h3>
+    <table style="width:100%">
+        <tr>
+            <th>Username</th>
+            <th>Remove</th>
+        </tr>
+        {% for vol in vols %}
+            <tr>
+                <td>{{ vol.username }}</td>
+                <td><a href="{{ config.access_point }}forms/remove_vol?board={{ board }}&vol={{ vol.username }}">Remove
+                        vol</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="form-group">
+    <form action="{{ config.access_point }}forms/add_vol" method="post">
+        <input type="hidden" name="board" value="{{ board }}">
+        <label>Vol username: <input type="text" name="vol"></label>
+        <button type="submit" name="add_vol_btn">Add vol!</button>
+    </form>
+</div>
+<div class="form-group">
+    <h3>Custom CSS:</h3>
+    <textarea form="update_board" name="custom_css">{{ board_css }}</textarea>
+</div>
+<div class="form-group">
+    <a href="{{ config.access_point }}forms/delete_board?board={{ board }}">Delete board!</a>
+</div>
+<div class="form-group">
+    <label>Enable country flags? <input form="update_board" type="checkbox" name="enable_country_flags" value="1"
+                                        {% if board_config.country_flags_enabled %}checked="checked"{% endif %}></label>
+</div>
+<div class="form-group">
+    <label>Enable user IDs? <input form="update_board" type="checkbox" name="enable_ids" value="1"
+                                   {% if board_config.enable_ids %}checked="checked"{% endif %}></label>
+</div>
+<div class="form-group">
+    <label>Hide board? <input form="update_board" type="checkbox" name="hide_board" value="1"
+                              {% if board_info.hidden %}checked="checked"{% endif %}></label>
+</div>
+<div class="form-group">
+    <label>Board password (set to blank to clear) <input form="update_board" type="password" value="password" name="board_password"></label>
+</div>
+<div class="form-group">
+    <a href="{{ config.access_point }}manage_banners?board={{ board }}">Manage banners</a>
+</div>
+{% if config.emotes_enabled %}
+<div class="form-group">
+    <a href="{{ config.access_point }}manage_emotes?board={{ board }}">Manage emotes</a>
+</div>
+{% endif %}
+<div class="form-group">
+    <a href="{{ config.access_point }}manage_board_filters?board={{ board }}">Manage board filters</a>
+</div>
+<div class="form-group">
+    <a href="{{ config.access_point }}send_alert?board={{ board }}">Send board alert to users</a>
+</div>
+<div class="form-group">
+    <button name="update_board_button" form="update_board" type="submit">Update settings</button>
+</div>
+
+{% include "footer.twig" %}

@@ -1,0 +1,31 @@
+{% include "header.twig" %}
+<h1>Welcome to {{ config.site_name }}!</h1>
+{% if config.top_boards_enabled %}
+    <h3>Top boards:</h3>
+    {% for board in boards %}
+        <a class="top_board" href="{{ config.access_point }}{{ board.name }}/">/{{ board.name }}/</a>
+    {% endfor %}
+{% endif %}
+<h3>Recent posts:</h3>
+<div class="board_container">
+    {% if not recent_posts %}
+    <p>No posts.</p>
+    {% endif %}
+    {% for post in recent_posts %}
+        <div class="catalog_item">
+    <span><a href="
+{{ config.access_point }}{{ post.board }}/
+{% if post.thread_id %}
+{{ post.thread_id }}#{{ post.id }}
+{% else %}
+{{ post.id }}
+{% endif %}
+    ">>>/{{ post.board }}/{{ post.id }}</a></span><br>
+                {% set board = post.board %}
+                {% set files = post.files %}
+                {% include "modules/recent_post_file.twig" %}<br>
+            <span>{{ post.message|raw|htmlspecialdecode|striptags|slice(0, 15) }}...</span>
+        </div>
+    {% endfor %}
+</div>
+{% include "footer.twig" %}

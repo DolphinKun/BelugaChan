@@ -1,0 +1,27 @@
+{% include "header.twig" %}
+<h1>Ban user:</h1>
+<form method="post" action="{{ config.access_point }}forms/ban_user">
+    <input type="hidden" name="id" value="{{ post_id }}">
+    <input type="hidden" name="board" value="{{ board }}">
+    <div class="form-group">
+        <label for="reason">Reason:</label>
+        <textarea id="reason" name="reason"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="shadow_ban">Shadow ban</label>
+        <input type="checkbox" id="shadow_ban" name="shadow_ban" value="1">
+    </div>
+    <div class="form-group">
+        <label for="delete_post">Delete?</label>
+        <input type="checkbox" id="delete_post" name="delete_post" value="1">
+    </div>
+    <div class="form-group">
+        <button name="ban_btn" type="submit">Ban from board</button>
+    </div>
+    {% if gvol %}
+    <div class="form-group">
+        <button name="ban_global_btn" type="submit">Ban globally</button>
+    </div>
+    {% endif %}
+</form>
+{% include "footer.twig" %}
