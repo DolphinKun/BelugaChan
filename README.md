@@ -30,6 +30,4 @@ If you plan to use country flags, then you will need to obtain the GeoIP-2 count
 If you want PPH/the webring (I do not recommend this, but that's your own choice) feature, you will need to setup an hourly cron job for cron.php. You can put the below in your crontab config (adjust it as needed; for shared hosts, you can get rid of the cd command usually):  
 `0 * * * * cd /mywebroot/ && php cron.php`
 #### Help
-I'm really stuck with the instructions; how to get help? Sure, post on <https://dolphinch.xyz/beluga/>.   
-Will you scrape my data, dolphin? No, you host this on your servers, so you're safe; review the code if you don't 100% trust me.  
-![DolphinChan](https://dolphinch.xyz/dolphin.jpg)
+No.
